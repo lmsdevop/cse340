@@ -144,6 +144,78 @@ nav ul li a:hover{
   font-weight: 400;
 }
 
+#inv-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  gap: 15px;
+}
+
+#inv-display li {
+  border: 1px solid rgb(195, 195, 195);
+  font-size: 20px;
+  text-align: center;
+  list-style: none;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+#inv-display li hr {
+  border-width: 3px;
+  border-style: solid;
+  background-color: black;
+}
+
+#inv-display li img {
+  width: 100%;
+  height: 55%;
+  border-radius: 10px;
+}
+
+#inv-display li h2 {
+  font-size: 15px;
+}
+
+.copyright {
+  padding-left: 20px;
+}
+
+.image-block img {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.details-itens {
+ display: flex;
+ flex-direction: column;
+ margin-bottom: 40px;
+}
+
+.details-itens span{
+  padding: 10px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+ }
+
+.details-itens span:nth-child(odd) {
+  background-color: #eae9e9; 
+}
+
+.details-itens span:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.error-messsage{
+  font-size: 30px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  background-image: url('../images/site/crashed_cars.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
 @media screen and (min-width: 500px) {
   html {
     background-image: url("/images/site/checkerboard.jpg");
@@ -203,9 +275,7 @@ nav ul li a:hover{
   .upgrades {
     grid-row: 1;
     grid-column: 1;
-
   }
-
 
   .upgrades-container a{
     width: 150px;
@@ -219,6 +289,36 @@ nav ul li a:hover{
     padding: 0 20px;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: left;
+  }
+
+  .copyright {
+    padding: 0;
+    margin: 0;
+  }
+
+  #inv-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  #inv-display li {
+    height: 100%;
+    padding: 0;
+  }
+  #inv-display li img {
+    border-radius: 10px;
+  }
+  .vehicle-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .image-block img {
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
   }
 }
