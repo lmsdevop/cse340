@@ -1,0 +1,15 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+    
+    <% if (messages && messages.length > 0) { %>
+        <div>
+          <% messages.forEach(function(message) { %>
+            <p><%= message %></p>
+          <% }) %>
+        </div>
+      <% } %>
+    
+    <%- management %>

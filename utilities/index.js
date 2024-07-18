@@ -77,6 +77,102 @@ Util.buildVehicleDetailPage = async function(data){
     return details
   }
 
+/* **************************************
+* Build the management view HTML
+* ************************************ */
+Util.buildVehicleManagement = async function(){
+  let management
+
+  management = '<section class="management-menu">'
+  management += '<a href="../../inv/add-classification">Add New Classification</a>'
+  management += '<a href="../../inv/add-inventory">Add New Vehicle</a>'
+
+  return management
+}
+
+Util.getAddClassificationForm = function () {
+  let formHTML
+  formHTML += `<div class="div-classification">`
+  formHTML += `<div class="form-div">`
+  formHTML += `<form id="add-classification-form" action="/inv/add-classification" method="POST">`
+  formHTML += `<span>NAME MUST BE ALPHABETIC CHARACTERS ONLY</span><br>`
+  formHTML += `<label for="classificationName">Classification Name:</label>`
+  formHTML += `<input type="text" id="classificationName" name="classificationName" required>`
+  formHTML += `<button type="submit">Add Classification</button>`
+  formHTML += `</form>`
+  formHTML += `</div>`
+  formHTML += `</div>`
+  
+  ;
+
+  return formHTML;
+};
+
+Util.getAddInventoryForm = async function () {
+  let formHTML = ''; // Inicialize a variável formHTML
+  const classification = await this.buildClassificationList(); // Use await para esperar a resolução da promessa
+
+  formHTML += `<div class="div-classification">`;
+  formHTML += `<div class="form-div">`;
+  formHTML += `<form id="add-inventory-form" action="/inv/add-inventory" method="POST">`;
+  formHTML += `<span>ALL FIELDS ARE REQUIRED</span><br>`;
+
+  formHTML += `<label for="classificationId">Classification</label>`;
+  formHTML += `${classification}`;
+
+  formHTML += `<label for="invMake">Make</label>`;
+  formHTML += `<input type="text" id="invMake" name="invMake" required>`;
+
+  formHTML += `<label for="invModel">Model</label>`;
+  formHTML += `<input type="text" id="invModel" name="invModel" required>`;
+
+  formHTML += `<label for="invDescription">Description</label>`;
+  formHTML += `<textarea type="text" id="invDescription" name="invDescription" required></textarea>`;
+
+  formHTML += `<label for="invImage">Image Path</label>`;
+  formHTML += `<input type="text" id="invImage" name="invImage" required>`;
+
+  formHTML += `<label for="invThumbnail">Thumbnail Path</label>`;
+  formHTML += `<input type="text" id="invThumbnail" name="invThumbnail" required>`;
+
+  formHTML += `<label for="invPrice">Price</label>`;
+  formHTML += `<input type="text" id="invPrice" name="invPrice" required>`;
+
+  formHTML += `<label for="invYear">Year</label>`;
+  formHTML += `<input type="text" id="invYear" name="invYear" required>`;
+
+  formHTML += `<label for="invMiles">Miles</label>`;
+  formHTML += `<input type="text" id="invMiles" name="invMiles" required>`;
+
+  formHTML += `<label for="invColor">Color</label>`;
+  formHTML += `<input type="text" id="invColor" name="invColor" required>`;
+
+  formHTML += `<button type="submit">Add Vehicle</button>`;
+  formHTML += `</form>`;
+  formHTML += `</div>`;
+  formHTML += `</div>`;
+
+  return formHTML;
+};
+
+Util.buildClassificationList = async function (classification_id = null) {
+  let data = await invModel.getClassifications();
+  let classificationList =
+    '<select name="classification_id" id="classificationList" required>';
+  classificationList += "<option value=''>Choose a Classification</option>";
+  data.rows.forEach((row) => {
+    classificationList += '<option value="' + row.classification_id + '"';
+    if (
+      classification_id != null &&
+      row.classification_id == classification_id
+    ) {
+      classificationList += " selected ";
+    }
+    classificationList += ">" + row.classification_name + "</option>";
+  });
+  classificationList += "</select>";
+  return classificationList;
+};
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 

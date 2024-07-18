@@ -39,4 +39,53 @@ async function getDetailByVehicleId(vehicle_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getDetailByVehicleId}
+async function addClassification(data) {
+  try {
+    console.log(data)
+    const result = await pool.query(
+      `INSERT INTO public.classification (classification_name)
+       VALUES ($1) RETURNING classification_id, classification_name`,
+      [data]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("addClassification error: " + error.message);
+    throw error; // Propagate the error
+  }
+}
+
+async function addVehicle(data) {
+  try {
+    console.log(data)
+    const result = await pool.query(
+      `INSERT INTO public.inventory (
+      classification_id, 
+      inv_make, 
+      inv_model, 
+      inv_description, 
+      inv_image, 
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      [ data.classification_id, 
+        data.invMake, 
+        data.invModel, 
+        data.invDescription, 
+        data.invImage, 
+        data.invThumbnail, 
+        data.invPrice, 
+        data.invYear, 
+        data.invMiles, 
+        data.invColor]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("addVehicle error: " + error.message);
+    throw error; 
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getDetailByVehicleId, addClassification, addVehicle}
