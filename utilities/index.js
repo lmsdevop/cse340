@@ -30,55 +30,55 @@ Util.getNav = async function (req, res, next) {
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
-Util.buildClassificationGrid = async function(data){
-    let grid
-    if(data.length > 0){
-      grid = '<ul id="inv-display">'
-      data.forEach(vehicle => { 
-        grid += '<li>'
-        grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
-        + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
-        + 'details"><img src="' + vehicle.inv_thumbnail 
-        +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
-        +' on CSE Motors" /></a>'
-        grid += '<div class="namePrice">'
-        grid += '<hr />'
-        grid += '<h2>'
-        grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
-        + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
+Util.buildClassificationGrid = async function (data) {
+  let grid
+  if (data.length > 0) {
+    grid = '<ul id="inv-display">'
+    data.forEach(vehicle => {
+      grid += '<li>'
+      grid += '<a href="../../inv/detail/' + vehicle.inv_id
+        + '" title="View ' + vehicle.inv_make + ' ' + vehicle.inv_model
+        + 'details"><img src="' + vehicle.inv_thumbnail
+        + '" alt="Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model
+        + ' on CSE Motors" /></a>'
+      grid += '<div class="namePrice">'
+      grid += '<hr />'
+      grid += '<h2>'
+      grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View '
+        + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">'
         + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
-        grid += '</h2>'
-        grid += '<span>$' 
+      grid += '</h2>'
+      grid += '<span>$'
         + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
-        grid += '</div>'
-        grid += '</li>'
-      })
-      grid += '</ul>'
-    } else { 
-      grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
-    }
-    return grid
+      grid += '</div>'
+      grid += '</li>'
+    })
+    grid += '</ul>'
+  } else {
+    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
+  return grid
+}
 
-Util.buildVehicleDetailPage = async function(data){
-    console.log(data)
-    let details
-    details = '<section class="vehicle-details">'
-    details += '<div class="image-block">'
-    details += '<img src="' + data.inv_image + '" alt="' + data.inv_model + ' vehicle">'
-    details += '</div>'
-    details += '<div class="details-block">'
-    details += '<h2>' + data.inv_make + ' Details</h2>'
-    details += '<div class="details-itens">'
-    details += '<span><strong>Price:</strong> $' + new Intl.NumberFormat('en-US').format(data.inv_price) + '</span>'
-    details += '<span><strong>Description:</strong> ' + data.inv_description + '</span>'
-    details += '<span><strong>Color:</strong> ' + data.inv_color + '</span>'
-    details += '<span><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(data.inv_miles) + '</span>'
-    details += '</div>'
-    details += '</div>'
-    details += '</section>'
-    return details
-  }
+Util.buildVehicleDetailPage = async function (data) {
+  console.log(data)
+  let details
+  details = '<section class="vehicle-details">'
+  details += '<div class="image-block">'
+  details += '<img src="' + data.inv_image + '" alt="' + data.inv_model + ' vehicle">'
+  details += '</div>'
+  details += '<div class="details-block">'
+  details += '<h2>' + data.inv_make + ' Details</h2>'
+  details += '<div class="details-itens">'
+  details += '<span><strong>Price:</strong> $' + new Intl.NumberFormat('en-US').format(data.inv_price) + '</span>'
+  details += '<span><strong>Description:</strong> ' + data.inv_description + '</span>'
+  details += '<span><strong>Color:</strong> ' + data.inv_color + '</span>'
+  details += '<span><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(data.inv_miles) + '</span>'
+  details += '</div>'
+  details += '</div>'
+  details += '</section>'
+  return details
+}
 
 /* **************************************
 * Build the management view HTML
@@ -107,36 +107,70 @@ Util.buildClassificationList = async function (classification_id = null) {
 **************************************** */
 Util.checkJWTToken = (req, res, next) => {
   if (req.cookies.jwt) {
-   jwt.verify(
-    req.cookies.jwt,
-    process.env.ACCESS_TOKEN_SECRET,
-    function (err, accountData) {
-     if (err) {
-      req.flash("Please log in")
-      res.clearCookie("jwt")
-      return res.redirect("/account/login")
-     }
-     res.locals.accountData = accountData
-     res.locals.loggedin = 1
-     next()
-    })
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("Please log in")
+          res.clearCookie("jwt")
+          return res.redirect("/account/login")
+        }
+        res.locals.accountData = accountData
+        res.locals.loggedin = 1
+        next()
+      })
   } else {
-   next()
+    next()
   }
- }
+}
 
- /* ****************************************
- *  Check Login
- * ************************************ */
+/* ****************************************
+*  Check Login
+* ************************************ */
 
- Util.checkLogin = (req, res, next) => {
+Util.checkLogin = (req, res, next) => {
   if (res.locals.loggedin) {
     next()
   } else {
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")
   }
- }
+}
+
+/* ****************************************
+* Decode JWT                
+**************************************** */
+Util.getUserLogged = (req) => {
+  const jwt = req.cookies.jwt;
+  let user = {};
+
+  if (jwt) {
+    const decodedJwt = Util.parseJwt(jwt)
+    user = {
+      isLoggedIn: true,
+      role: decodedJwt.account_type,
+      username: decodedJwt.account_firstname
+    };
+  } else {
+    user = {
+      isLoggedIn: false
+    };
+  }
+  return user
+
+}
+
+Util.parseJwt = (token) => {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+}
+
 
 /* ****************************************
  * Middleware For Handling Errors

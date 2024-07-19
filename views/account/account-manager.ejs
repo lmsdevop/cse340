@@ -2,8 +2,10 @@
 <h1><%= title %></h1>
 <% } else { res.redirect('/') } %> <%- messages() %> 
 
-<h3>Welcome Happy</h3>
+<h3>Welcome <%- user.username %></h3>
 <p>You're logged in.</p>
 <a href="">Edit Account Information</a>
-<h3>Inventory Management</h3>
-<a href="../inv/">Manage Inventory</a>
+<% if ( user.role != 'Client') { %>
+    <h3>Inventory Management</h3>
+    <a href="/inv/">Manage Inventory</a>
+<% } %>
