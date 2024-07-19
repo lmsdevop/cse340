@@ -1,9 +1,43 @@
 <% if (title) { %>
-    <h1><%= title %></h1>
-    <% } else {
-        res.redirect('/')
-    } %>
-    
-    <% messages() %>
-    
-    <%- vehicleForm %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<div class="div-classification">
+  <div class="form-div">
+    <form id="add-inventory-form" action="/inv/add-inventory" method="POST">
+      <span>ALL FIELDS ARE REQUIRED</span><br />
+
+      <label for="classificationId">Classification</label>
+      <%- classificationSelect %>
+      <label for="invMake">Make</label>
+      <input type="text" id="invMake" name="invMake" required />
+
+      <label for="invModel">Model</label>
+      <input type="text" id="invModel" name="invModel" required />
+
+      <label for="invDescription">Description</label>
+      <textarea
+        type="text"
+        id="invDescription"
+        name="invDescription"
+        required
+      ></textarea>
+
+      <label for="invImage">Image Path</label>
+      <input type="text" id="invImage" name="invImage" required />
+
+      <label for="invThumbnail">Thumbnail Path</label>
+      <input type="text" id="invThumbnail" name="invThumbnail" required />
+
+      <label for="invPrice">Price</label>
+      <input type="text" id="invPrice" name="invPrice" required />
+      <label for="invYear">Year</label>
+      <input type="text" id="invYear" name="invYear" required />
+      <label for="invMiles">Miles</label>
+      <input type="text" id="invMiles" name="invMiles" required />
+      <label for="invColor">Color</label>
+      <input type="text" id="invColor" name="invColor" required />
+
+      <button type="submit">Add Vehicle</button>
+    </form>
+  </div>
+</div>

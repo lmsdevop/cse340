@@ -1,0 +1,90 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<div class="div-classification">
+  <div class="form-div">
+    <form id="updateForm" action="/inv/update" method="POST">
+      <span>ALL FIELDS ARE REQUIRED</span><br />
+
+      <label for="classificationId">Classification</label>
+      <%- classificationSelect %>
+      <label for="invMake">Make</label>
+      <input
+        type="text"
+        id="invMake"
+        name="invMake"
+        required
+        value="<%= invMake %>"
+      />
+
+      <label for="invModel">Model</label>
+      <input
+        type="text"
+        id="invModel"
+        name="invModel"
+        required
+        value="<%= invModel %>"
+      />
+
+      <label for="invDescription">Description</label>
+      <textarea type="text" id="invDescription" name="invDescription" required>
+<%= invDescription %></textarea
+      >
+
+      <label for="invImage">Image Path</label>
+      <input
+        type="text"
+        id="invImage"
+        name="invImage"
+        required
+        value="<%= invImage %>"
+      />
+
+      <label for="invThumbnail">Thumbnail Path</label>
+      <input
+        type="text"
+        id="invThumbnail"
+        name="invThumbnail"
+        required
+        value="<%= invThumbnail %>"
+      />
+
+      <label for="invPrice">Price</label>
+      <input
+        type="text"
+        id="invPrice"
+        name="invPrice"
+        required
+        value="<%= invPrice %>"
+      />
+      <label for="invYear">Year</label>
+      <input
+        type="text"
+        id="invYear"
+        name="invYear"
+        required
+        value="<%= invYear %>"
+      />
+      <label for="invMiles">Miles</label>
+      <input
+        type="text"
+        id="invMiles"
+        name="invMiles"
+        required
+        value="<%= invMiles %>"
+      />
+      <label for="invColor">Color</label>
+      <input
+        type="text"
+        id="invColor"
+        name="invColor"
+        required
+        value="<%= invColor %>"
+      />
+      <input type="hidden" name="inv_id" value="<%= inv_id %>">
+      <button type="submit" disabled>Update Vehicle</button>
+    </form>
+  </div>
+</div>
+
+<script src="../../js/inv-update.js"></script>

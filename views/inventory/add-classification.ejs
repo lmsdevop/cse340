@@ -1,9 +1,23 @@
 <% if (title) { %>
-    <h1><%= title %></h1>
-    <% } else {
-        res.redirect('/')
-    } %>
-    
-    <% messages() %>
-    
-    <%- classificationForm %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+
+<div class="div-classification">
+  <div class="form-div">
+    <form
+      id="add-classification-form"
+      action="/inv/add-classification"
+      method="POST"
+    >
+      <span>NAME MUST BE ALPHABETIC CHARACTERS ONLY</span><br />
+      <label for="classificationName">Classification Name:</label>
+      <input
+        type="text"
+        id="classificationName"
+        name="classificationName"
+        required
+      />
+      <button type="submit">Add Classification</button>
+    </form>
+  </div>
+</div>

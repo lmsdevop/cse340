@@ -252,6 +252,55 @@ nav ul li a:hover{
   margin: 20px 0;
 }
 
+.login-form {
+  display: flex;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  flex-direction: column;
+  align-items: left;
+  background-color: #1f6ca7;
+  border-radius: 10px;
+  margin: 0 auto;
+  width: 80%;
+  color: white;
+  padding: 30px;
+}
+
+.input-form, .login-button {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-form input {
+  border: None;
+  border-radius: 20px;
+  height: 30px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  font-size: 20px;
+}
+
+.input-form span {
+  font-style: italic;
+}
+.login-button {
+  padding-top: 15px;
+  margin: 10px;
+  align-items: center;
+}
+
+.login-form button{
+  border: none;
+  width: 30%;
+  height: 30px;
+  border-radius: 20px;
+  margin-bottom: 5px;
+}
+
+table {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  width: 40%;
+}
+
 @media screen and (min-width: 500px) {
   html {
     background-image: url("/images/site/checkerboard.jpg");
@@ -370,5 +419,9 @@ nav ul li a:hover{
     font-size: 20px;
     font-weight: bold;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+
+  .login-form {
+    width: 50%;
   }
 }

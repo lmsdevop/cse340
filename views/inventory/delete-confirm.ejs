@@ -1,0 +1,49 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else { res.redirect('/') } %> <%- messages() %>
+<div class="div-classification">
+    <div class="form-div">
+    <form id="deleteForm" action="/inv/delete" method="POST">
+        <p>Confirm Deletion - The delete is permanent.</p>
+    
+        <label for="invMake">Make</label>
+        <input
+        type="text"
+        id="invMake"
+        name="invMake"
+        readonly
+        value="<%= invMake %>"
+        />
+
+        <label for="invModel">Model</label>
+        <input
+        type="text"
+        id="invModel"
+        name="invModel"
+        readonly
+        value="<%= invModel %>"
+        />
+
+        <label for="invPrice">Price</label>
+        <input
+        type="text"
+        id="invPrice"
+        name="invPrice"
+        readonly
+        value="<%= invPrice %>"
+        />
+        <label for="invYear">Year</label>
+        <input
+        type="text"
+        id="invYear"
+        name="invYear"
+        readonly
+        value="<%= invYear %>"
+        />
+        <input type="hidden" name="inv_id" value="<%= inv_id %>">
+        <button type="submit">Delete Vehicle</button>
+    </form>
+    </div>
+</div>
+
+    
