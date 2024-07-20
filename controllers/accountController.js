@@ -19,6 +19,32 @@ async function buildLogin(req, res, next) {
   })
 }
 
+async function buildEditAccountView(req, res, next) {
+  let nav = await utilities.getNav();
+  const user = utilities.getUserLogged(req);
+
+  const account_id = parseInt(req.params.account_id)
+  const accountData = await accountModel.getAccountById(account_id)
+  res.render("./account/update", {
+    title: "Edit " + accountData.account_firstname,
+    nav,
+    user,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email,
+    account_password: accountData.account_password,
+    account_id: accountData.account_id,
+  })
+
+
+
+  res.render("account/update", {
+    title: "Edit Account",
+    nav,
+    user,
+  })
+}
+
 async function buildAccountManagement(req, res, next) {
   let nav = await utilities.getNav();
   const user = utilities.getUserLogged(req);
@@ -78,6 +104,53 @@ async function registerAccount(req, res) {
   }
 }
 
+
+async function updateAccount(req, res) {
+  let nav = await utilities.getNav();
+  const user = utilities.getUserLogged(req);
+
+  const { account_firstname, account_lastname, account_email, account_password, account_id } = req.body
+  if (account_password) {
+    const updatePassResult = await accountModel.updatePassword(account_password, account_id);
+    if (updatePassResult.rowCount >= 1) {
+      req.flash(
+        "notice",
+        `Congratulations, password changed`
+      )
+      res.status(201).render("account/account-manager", {
+        title: "Account Management",
+        nav,
+        user,
+      })
+    } else {
+      req.flash("notice", "Sorry, update user failed, try again.")
+      res.redirect(`account/update/${account_id}`)
+    }
+  } else {
+    const updateResult = await accountModel.updateAccount(
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_id
+    )
+
+    if (updateResult.rowCount >= 1) {
+      req.flash(
+        "notice",
+        `Congratulations, user ${account_firstname} updated`
+      )
+      res.status(201).render("account/account-manager", {
+        title: "Account Management",
+        nav,
+        user,
+      })
+    } else {
+      req.flash("notice", "Sorry, password changed failed, try again.")
+      res.redirect(`/account/update/${account_id}`)
+    }
+  }
+}
+
 /* ****************************************
  *  Process login request
  * ************************************ */
@@ -120,4 +193,4 @@ async function accountLogout(req, res) {
   res.redirect("/account/login");
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, accountLogout }
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, accountLogout, buildEditAccountView, updateAccount }

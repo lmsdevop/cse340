@@ -149,6 +149,7 @@ Util.getUserLogged = (req) => {
     const decodedJwt = Util.parseJwt(jwt)
     user = {
       isLoggedIn: true,
+      id: decodedJwt.account_id,
       role: decodedJwt.account_type,
       username: decodedJwt.account_firstname
     };

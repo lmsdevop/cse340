@@ -5,7 +5,7 @@ const utilities = require("../utilities/")
 const accountController = require('../controllers/accountController')
 const regValidate = require('../utilities/account-validation')
 
-// Route to build inventory by classification view
+// Route to login and logout
 router.get("/login", utilities.handleErrors(accountController.buildLogin))
 router.post(
   "/login",
@@ -13,6 +13,9 @@ router.post(
   regValidate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 )
+router.get("/logout", utilities.handleErrors(accountController.accountLogout))
+
+// Route to register an account
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
 router.post(
   "/register",
@@ -20,7 +23,12 @@ router.post(
   regValidate.checkRegData,
   utilities.handleErrors(accountController.registerAccount)
 )
-router.get("/logout", utilities.handleErrors(accountController.accountLogout))
+
+// Route to update account
+router.get("/update/:account_id", utilities.handleErrors(accountController.buildEditAccountView))
+router.post("/update", utilities.handleErrors(accountController.updateAccount))
+
+// Main route
 router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement))
 
 module.exports = router;
