@@ -94,6 +94,7 @@ async function registerAccount(req, res) {
       title: "Login",
       nav,
       user,
+      errors: null,
     })
   } else {
     req.flash("notice", "Sorry, the registration failed.")
@@ -101,6 +102,7 @@ async function registerAccount(req, res) {
       title: "Registration",
       nav,
       user,
+      errors: null,
     })
   }
 }
