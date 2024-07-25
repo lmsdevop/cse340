@@ -18,6 +18,7 @@ const flash = require('connect-flash');
 const static = require("./routes/static");
 const accountRoute = require("./routes/accountRoute");
 const inventoryRoute = require("./routes/inventoryRoute");
+const commentRoute = require("./routes/commentsRoute")
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use("/inv", utilities.handleErrors(inventoryRoute))
 // Account routes
 app.use("/account", utilities.handleErrors(accountRoute))
 // File Not Found Route - must be last route in list
+app.use("/comment", utilities.handleErrors(commentRoute))
 app.use(async (req, res, next) => {
   next({ status: 404, message: 'Sorry, we appear to have lost that page.' })
 })

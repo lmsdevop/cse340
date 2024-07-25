@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const commentModel = require("../models/comment-model")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
@@ -78,6 +79,37 @@ Util.buildVehicleDetailPage = async function (data) {
   details += '</div>'
   details += '</section>'
   return details
+}
+
+Util.buildFormComments = async function (vehicle_id) {
+  commentsform = '<section class="comments-section">'
+  commentsform += '<h2>Comments</h2>'
+  commentsform += '<form class="comment-form" action="/comment/create" method="post">'
+  commentsform += '<input type="hidden" name="vehicle_id" value="' + vehicle_id + '"></input>'
+  commentsform += '<input type="textarea" id="commenttext" name="commenttext" placeholder="Write your comment here..." required></textarea>'
+  commentsform += '<button type="submit">Submit</button>'
+  commentsform += '</form>'
+  commentsform += '<div class="comment-container">'
+
+  return commentsform
+}
+
+Util.buildVehicleCommentsComponent = async function (vehicle_id) {
+  let data = await commentModel.getCommentsByVehicleId(vehicle_id);
+  let comments = '';
+  if (data.length != 0) {
+    data.forEach(comment => {
+      comments += '<div class="comment-made">';
+      comments += '<h4>' + comment.comment_user + '</h4>';
+      comments += '<p>' + comment.comment_text + '</p>';
+      comments += '<span><strong>commented on</strong> ' + new Date(comment.comment_date).toLocaleDateString() + '</span>';
+      comments += '</div>';
+    });
+  } else {
+    comments = '<h3>No comments are made. Be the first!</h3>'
+  }
+
+  return comments
 }
 
 /* **************************************

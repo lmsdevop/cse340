@@ -28,6 +28,8 @@ invCont.buildByVehicleId = async function (req, res, next) {
   const vehicle_id = req.params.vehicleId
   const data = await inventoryModel.getDetailByVehicleId(vehicle_id)
   const details = await utilities.buildVehicleDetailPage(data[0])
+  const commentForm = await utilities.buildFormComments(vehicle_id)
+  const comments = await utilities.buildVehicleCommentsComponent(vehicle_id)
   let nav = await utilities.getNav()
   const vehicleName = data[0].inv_year + " " + data[0].inv_make + " " + data[0].inv_model
   res.render("./inventory/vehicle", {
@@ -35,6 +37,8 @@ invCont.buildByVehicleId = async function (req, res, next) {
     nav,
     user,
     details,
+    comments,
+    commentForm,
   })
 }
 
